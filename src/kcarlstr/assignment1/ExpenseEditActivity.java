@@ -70,80 +70,19 @@ public class ExpenseEditActivity extends Activity implements DatePickerFragment.
         expense_clicked = extras.getInt(ExpenseListActivity.EXPENSE_CLICKED_INTENT);
         claim_clicked = extras.getInt(ClaimsListActivity.CLAIM_CLICKED_INTENT);
         claim_progress = extras.getString(ExpenseListActivity.CLAIM_STATUS_INTENT);
+        
+        // Inflates the "cancel/done" action bar
+        inflateActionBar();
 
+        // Get the current expense
         claim = ClaimsData.get(getApplicationContext()).getClaims().get(claim_clicked);
         expense = claim.getExpenses().get(expense_clicked);
+        // Invoke the copy constructor to make a clone of the original expense
+        // This is done in case the user hits cancel so the changes can be reverted
         previous_expense = new Expense(expense);
 
-        // https://android.googlesource.com/platform/developers/samples/android/+/master/ui/actionbar/DoneBar/Application/src/main/java/com/example/android/donebar/DoneBarActivity.java
-        // 2015-01-25
-        /*
-*       Copyright 2013 The Android Open Source Project
-*
-*       Licensed under the Apache License, Version 2.0 (the "License");
-*       you may not use this file except in compliance with the License.
-*        You may obtain a copy of the License at
-*
-*       http://www.apache.org/licenses/LICENSE-2.0
-*
-*        Unless required by applicable law or agreed to in writing, software
-*        distributed under the License is distributed on an "AS IS" BASIS,
-*        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*        See the License for the specific language governing permissions and
-*        limitations under the License.
-*/
 
-        // BEGIN_INCLUDE (inflate_set_custom_view)
-        // Inflate a "Done/Cancel" custom action bar view.
-        final LayoutInflater inflater = (LayoutInflater) getActionBar().getThemedContext()
-                .getSystemService(LAYOUT_INFLATER_SERVICE);
-        final View customActionBarView = inflater.inflate(
-                R.layout.actionbar_custom_view_done_cancel, null);
-        customActionBarView.findViewById(R.id.actionbar_done).setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (expense.getDescription().equals("") || expense.getAmount() == 0) {
-                            Toast.makeText(getApplicationContext(),
-                                    "Please enter a description and amount",
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            finish();
-                        }
-                    }
-                });
-        customActionBarView.findViewById(R.id.actionbar_cancel).setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (previous_expense.getAmount() != 0.0 &&
-                                !previous_expense.getDescription().equals("")) {
-                            if (expense.getDescription().equals("") || expense.getAmount() == 0) {
-                                claim.getExpenses().remove(expense);
-                            }
-                        } else {
-                            if (expense.getDescription().equals("") || expense.getAmount() == 0) {
-                                claim.getExpenses().set(claim_clicked, previous_expense);
-                            } else {
-                                claim.getExpenses().remove(expense);
-                            }
-                        }
-                        finish();
-                    }
-                });
-        // Show the custom action bar view and hide the normal Home icon and title.
-        final ActionBar actionBar = getActionBar();
-        actionBar.setDisplayOptions(
-                ActionBar.DISPLAY_SHOW_CUSTOM,
-                ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME
-                        | ActionBar.DISPLAY_SHOW_TITLE);
-        actionBar.setCustomView(customActionBarView,
-                new ActionBar.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT));
-                        // END_INCLUDE (inflate_set_custom_view)
-
-
+        // Sets the expense to be editable or not based on the claims status
         if (claim_progress.equals("Submitted") || claim_progress.equals("Approved")) {
             getActionBar().hide();
             amountSpentEditText.setFocusable(false);
@@ -159,13 +98,12 @@ public class ExpenseEditActivity extends Activity implements DatePickerFragment.
         dateButtonExpense.setText(sf.format(expense.getDate()));
         descriptionEditText.setText(expense.getDescription());
 
-
+        // Set the adapter for the currency and categories spinners
         ArrayAdapter<CharSequence> currencyAdapter = ArrayAdapter.createFromResource(this,
                 R.array.currency_string,
                 android.R.layout.simple_spinner_dropdown_item);
         currencySpinner.setAdapter(currencyAdapter);
         currencySpinner.setSelection(currencyAdapter.getPosition(expense.getCurrency().toString()));
-
 
         ArrayAdapter<CharSequence> categoriesAdapter = ArrayAdapter.createFromResource(this,
                 R.array.categories_string,
@@ -173,6 +111,7 @@ public class ExpenseEditActivity extends Activity implements DatePickerFragment.
         categoriesSpinner.setAdapter(categoriesAdapter);
         categoriesSpinner.setSelection(categoriesAdapter.getPosition(expense.getCategory()));
 
+        
         currencySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -237,6 +176,7 @@ public class ExpenseEditActivity extends Activity implements DatePickerFragment.
             }
         });
 
+        // On clicking the button a date picker dialog appears
         dateButtonExpense.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -248,20 +188,86 @@ public class ExpenseEditActivity extends Activity implements DatePickerFragment.
             }
         });
 
-
     }
+    
+    // Method to receive the date from the date picker dialog
     @Override
     public void onDataPass(Date data) {
         expense.setDate(data);
-        dateButtonExpense.setText(sf.format(data));
+        dateButtonExpense.setText(sf.format(data)); // Since onResume() is not called, must update text manually
     }
 
-
+    // If the expense is new and back is pressed then it doesn't save it
     @Override
     public void onBackPressed() {
-        if (expense.getDescription().equals("") || expense.getAmount() == 0) {
-            claim.getExpenses().remove(expense);
+        if (expense.getIs_new()) {
+        	claim.getExpenses().remove(expense);
         }
         super.onBackPressed();
     }
+
+    private void inflateActionBar() {
+    // https://android.googlesource.com/platform/developers/samples/android/+/master/ui/actionbar/DoneBar/Application/src/main/java/com/example/android/donebar/DoneBarActivity.java
+    // 2015-01-25
+    /*
+*       Copyright 2013 The Android Open Source Project
+*
+*       Licensed under the Apache License, Version 2.0 (the "License");
+*       you may not use this file except in compliance with the License.
+*        You may obtain a copy of the License at
+*
+*       http://www.apache.org/licenses/LICENSE-2.0
+*
+*        Unless required by applicable law or agreed to in writing, software
+*        distributed under the License is distributed on an "AS IS" BASIS,
+*        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+*        See the License for the specific language governing permissions and
+*        limitations under the License.
+*/
+
+    // BEGIN_INCLUDE (inflate_set_custom_view)
+    // Inflate a "Done/Cancel" custom action bar view.
+    final LayoutInflater inflater = (LayoutInflater) getActionBar().getThemedContext()
+            .getSystemService(LAYOUT_INFLATER_SERVICE);
+    final View customActionBarView = inflater.inflate(
+            R.layout.actionbar_custom_view_done_cancel, null);
+    customActionBarView.findViewById(R.id.actionbar_done).setOnClickListener(
+            new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (expense.getDescription().equals("") || expense.getAmount() == 0) {
+                        Toast.makeText(getApplicationContext(),
+                                "Please enter a description and amount",
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+                    	expense.setIs_new(false);
+                        finish();
+                    }
+                }
+            });
+    customActionBarView.findViewById(R.id.actionbar_cancel).setOnClickListener(
+            new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (expense.getIs_new()) {
+                    	claim.getExpenses().remove(expense);
+                    } else {
+                    	claim.getExpenses().remove(expense);
+                    	claim.getExpenses().add(previous_expense);
+                    }
+                    finish();
+                }
+            });
+    // Show the custom action bar view and hide the normal Home icon and title.
+    final ActionBar actionBar = getActionBar();
+    actionBar.setDisplayOptions(
+            ActionBar.DISPLAY_SHOW_CUSTOM,
+            ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME
+                    | ActionBar.DISPLAY_SHOW_TITLE);
+    actionBar.setCustomView(customActionBarView,
+            new ActionBar.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT));
+                    // END_INCLUDE (inflate_set_custom_view)
+	}
 }

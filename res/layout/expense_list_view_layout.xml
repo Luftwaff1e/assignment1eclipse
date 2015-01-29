@@ -10,8 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/claim_title"
-        android:textSize="32sp"
-        android:background="@android:color/transparent"/>
+        android:textSize="24sp"
+        android:inputType="textCapSentences"/>
 
 
     <LinearLayout
@@ -21,6 +21,12 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:orientation="horizontal">
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start Date"
+            style="?android:listSeparatorTextViewStyle" />
 
         <Button
             android:layout_width="wrap_content"
@@ -31,21 +37,28 @@
             android:gravity="center"
             android:background="@android:color/transparent"/>
 
+        </LinearLayout>
+        
+     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal">
+        
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight=".1"
-            android:text="-"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:gravity="center"/>
+            android:text="End Date"
+            style="?android:listSeparatorTextViewStyle" />
 
         <Button
             android:id="@+id/end_date_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="End date"
+            android:hint="End date  "
             android:gravity="center"
             android:background="@android:color/transparent"
             />
@@ -64,12 +77,20 @@
             android:text="Status: "
             android:layout_weight="1"/>
 
+        <ProgressBar
+            android:id="@+id/claim_progress_bar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" 
+            android:max="100"/>
+
         <TextView
             android:id="@+id/claim_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="4"
-            />
+            android:layout_weight="2"
+            android:paddingLeft="16dp"/>
 
         </LinearLayout>
 

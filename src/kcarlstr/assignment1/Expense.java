@@ -1,6 +1,5 @@
 package kcarlstr.assignment1;
 
-import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.Date;
 import java.util.Locale;
@@ -10,6 +9,7 @@ import java.util.Locale;
  */
 
 public class Expense {
+	private boolean is_new;
     private Date date;
     private String category;
     private String description;
@@ -23,6 +23,7 @@ public class Expense {
         description = "";
         amount = 0;
         currency = Currency.getInstance("CAD");
+        is_new = true;
 
     }
 
@@ -32,6 +33,7 @@ public class Expense {
         this.description = new String(copy.getDescription());
         this.amount = copy.getAmount();
         this.currency = copy.getCurrency();
+        this.is_new = copy.getIs_new();
     }
 
     public Date getDate() {
@@ -74,4 +76,11 @@ public class Expense {
         this.currency = currency;
     }
 
+	public boolean getIs_new() {
+		return is_new;
+	}
+
+	public void setIs_new(boolean is_new) {
+		this.is_new = is_new;
+	}
 }

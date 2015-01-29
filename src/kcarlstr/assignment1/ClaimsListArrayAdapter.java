@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
@@ -32,6 +33,7 @@ public class ClaimsListArrayAdapter extends ArrayAdapter<Claim> {
     private TextView usdTextView;
     private TextView eurTextView;
     private TextView gbpTextView;
+    private ProgressBar claimProgress;
 
 
     public ClaimsListArrayAdapter(Context context, List<Claim> objects) {
@@ -53,31 +55,33 @@ public class ClaimsListArrayAdapter extends ArrayAdapter<Claim> {
         usdTextView = (TextView) v.findViewById(R.id.expense_amount_usd);
         eurTextView = (TextView) v.findViewById(R.id.expense_amount_eur);
         gbpTextView = (TextView) v.findViewById(R.id.expense_amount_gbp);
+        claimProgress = (ProgressBar) v.findViewById(R.id.claim_progress_bar_list);
 
         // Set the text for the textview
         claim = claims.get(position);
         destinationTextView.setText(claim.getClaimDescription());
         claimStatusTextView.setText(claim.getProgress());
 
+        // Set the different currency amounts
         currencyAmounts = claim.getCurrencyAmounts();
-        if (currencyAmounts.get("CAD") != null) {
-            nf.setCurrency(Currency.getInstance("CAD"));
-            cadTextView.setText(nf.format(currencyAmounts.get("CAD")));
-        }
-
-        if (currencyAmounts.get("USD") != null) {
-            nf.setCurrency(Currency.getInstance("USD"));
-            usdTextView.setText(nf.format(currencyAmounts.get("USD")));
-        }
-
-        if (currencyAmounts.get("EUR") != null) {
-            nf.setCurrency(Currency.getInstance("EUR"));
-            eurTextView.setText(nf.format(currencyAmounts.get("EUR")));
-        }
-
-        if (currencyAmounts.get("GBP") != null) {
-            nf.setCurrency(Currency.getInstance("GBP"));
-            gbpTextView.setText(nf.format(currencyAmounts.get("GBP")));
+        nf.setCurrency(Currency.getInstance("CAD"));
+        cadTextView.setText(nf.format(currencyAmounts.get("CAD")));
+        nf.setCurrency(Currency.getInstance("USD"));
+        usdTextView.setText(nf.format(currencyAmounts.get("USD")));
+        nf.setCurrency(Currency.getInstance("EUR"));
+        eurTextView.setText(nf.format(currencyAmounts.get("EUR")));
+        nf.setCurrency(Currency.getInstance("GBP"));
+        gbpTextView.setText(nf.format(currencyAmounts.get("GBP")));
+        
+        String progress = claim.getProgress();
+        if (progress.equals("Submitted")) {
+            claimProgress.setProgress(50);
+        } else if (progress.equals("Returned")) {
+            claimProgress.setProgress(0);
+        } else if (progress.equals("Approved")) {
+            claimProgress.setProgress(100);
+        } else {
+        	claimProgress.setProgress(0);
         }
 
         // Return the view that was generated

@@ -29,7 +29,10 @@ public class ClaimsListActivity extends ListActivity implements ConfirmDeleteFra
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        claims = ClaimsData.get(getApplicationContext()).getClaims();
+        claims = ClaimsData.get(this).loadClaims();
+        if (claims == null) {
+        	claims = ClaimsData.get(this).getClaims();
+        }
         adapter = new ClaimsListArrayAdapter(this, claims);
         ListView lv = getListView();
         lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -62,6 +65,12 @@ public class ClaimsListActivity extends ListActivity implements ConfirmDeleteFra
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.claims_list_view_menu, menu);
         return true;
+    }
+    
+    @Override
+    public void onPause() {
+    	super.onPause();
+    	ClaimsData.get(this).saveClaims();
     }
 
     public void addClaim(MenuItem item) {

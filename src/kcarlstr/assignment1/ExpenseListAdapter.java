@@ -25,16 +25,15 @@ public class ExpenseListAdapter extends ArrayAdapter<Expense> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // Get inflater object
+        // Inflate the layout for each row in the list
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        // Inflate the xml file "claims_list_layout" which gives the view for the list items
         View v = inflater.inflate(R.layout.expense_list_layout, parent, false);
 
-        // Get reference to the text view found in the layout
+        // Get reference to the textviews found in the layout
         TextView descriptionTextView = (TextView) v.findViewById(R.id.description_expense);
         TextView amountSpentTextView = (TextView) v.findViewById(R.id.amount_spent_expense);
 
+        
         NumberFormat nf = NumberFormat.getCurrencyInstance();
         nf.setCurrency(expenses.get(position).getCurrency());
         amountSpentTextView.setText(nf.format(expenses.get(position).getAmount()));

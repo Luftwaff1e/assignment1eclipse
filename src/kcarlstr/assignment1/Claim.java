@@ -1,12 +1,15 @@
 package kcarlstr.assignment1;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Currency;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import android.R.integer;
 
 /**
  * Created by kylecarlstrom on 15-01-15.
@@ -71,6 +74,10 @@ public class Claim {
 
     private void updateCurrencyAmounts() {
         currencyAmounts.clear();
+        currencyAmounts.put("CAD", 0.0);
+        currencyAmounts.put("USD", 0.0);
+        currencyAmounts.put("EUR", 0.0);
+        currencyAmounts.put("GBP", 0.0);
         for (int i = 0; i < expenses.size(); i++) {
             Expense expense = expenses.get(i);
             String currencyCode = expense.getCurrency().getCurrencyCode();
@@ -82,12 +89,18 @@ public class Claim {
                 currencyAmounts.put(currencyCode, expense.getAmount());
             }
         }
+        
     }
+    
 
     public Map<String, Double> getCurrencyAmounts() {
         updateCurrencyAmounts();
         return currencyAmounts;
     }
+    
+    
+
+    
 }
 
 class ClaimComparator implements Comparator<Claim> {
