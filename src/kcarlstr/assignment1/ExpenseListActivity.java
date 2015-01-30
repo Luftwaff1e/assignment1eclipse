@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,13 +35,13 @@ public class ExpenseListActivity extends ListActivity implements DatePickerFragm
     private boolean is_start_date = false;
     private SimpleDateFormat sf = new SimpleDateFormat("MMMM dd, yyyy");
 
-    ExpenseListAdapter adapter;
-    TextView titleTextView;
-    Claim current_claim;
-    Button startDateButton;
-    Button endDateButton;
-    TextView claimStatusTextView;
-    ProgressBar claimProgress;
+    private ExpenseListAdapter adapter;
+    private TextView titleTextView;
+    private Claim current_claim;
+    private Button startDateButton;
+    private Button endDateButton;
+    private TextView claimStatusTextView;
+    private ProgressBar claimProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +132,10 @@ public class ExpenseListActivity extends ListActivity implements DatePickerFragm
         lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            	if (current_claim.getProgress().equals("Submitted") || current_claim.getProgress().equals("Approved")) {
+            		Toast.makeText(getBaseContext(), "Cannot currently delete expense items", Toast.LENGTH_SHORT).show();
+            		return true;
+            	}
                 ConfirmDeleteFragment dialog = new ConfirmDeleteFragment();
                 dialog.show(getFragmentManager(), "confirmDialog");
                 expense_clicked = position;
@@ -197,13 +202,25 @@ public class ExpenseListActivity extends ListActivity implements DatePickerFragm
                 approveClaimButton.setVisible(false);
                 submitClaimButton.setVisible(true);
         } else {
-                getActionBar().hide();
+        	returnClaimButton.setVisible(false);
+            approveClaimButton.setVisible(false);
+            addExpenseButton.setVisible(false);
+            deleteClaimButton.setVisible(false);
+            submitClaimButton.setVisible(false);
         }
 
         return true;
     }
 
-    // Called when the user presses the "Add Expense" menu button
+    
+    
+    @Override
+	protected void onPause() {
+		super.onPause();
+		ClaimsData.get(this).saveClaims();
+	}
+
+	// Called when the user presses the "Add Expense" menu button
     // Creates a new expense and then passes it to a new activity so the user can edit it
     public void addExpense(MenuItem item) {
         Expense newExpense = new Expense();

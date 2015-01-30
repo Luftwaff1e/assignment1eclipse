@@ -47,11 +47,11 @@ public class ExpenseEditActivity extends Activity implements DatePickerFragment.
     private Expense previous_expense;
 
 
-    EditText amountSpentEditText;
-    Button dateButtonExpense;
-    Spinner currencySpinner;
-    EditText descriptionEditText;
-    Spinner categoriesSpinner;
+    private EditText amountSpentEditText;
+    private Button dateButtonExpense;
+    private Spinner currencySpinner;
+    private EditText descriptionEditText;
+    private Spinner categoriesSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -200,13 +200,21 @@ public class ExpenseEditActivity extends Activity implements DatePickerFragment.
     // If the expense is new and back is pressed then it doesn't save it
     @Override
     public void onBackPressed() {
-        if (expense.getIs_new()) {
+        if (expense.getDescription().equals("") || expense.getAmount() == 0) {
         	claim.getExpenses().remove(expense);
         }
         super.onBackPressed();
     }
+    
+    
 
-    private void inflateActionBar() {
+    @Override
+	protected void onPause() {
+		super.onPause();
+		ClaimsData.get(this).saveClaims();
+	}
+
+	private void inflateActionBar() {
     // https://android.googlesource.com/platform/developers/samples/android/+/master/ui/actionbar/DoneBar/Application/src/main/java/com/example/android/donebar/DoneBarActivity.java
     // 2015-01-25
     /*
