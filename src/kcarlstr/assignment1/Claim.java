@@ -92,14 +92,23 @@ public class Claim {
         
     }
     
-
     public Map<String, Double> getCurrencyAmounts() {
         updateCurrencyAmounts();
         return currencyAmounts;
     }
-    
-    
 
+	@Override
+	public String toString() {
+		String claim_text = "";
+		claim_text += claimDescription + "\n";
+		claim_text += "Date range: " + startDate.toLocaleString() + " - " + endDate.toLocaleString() + "\n";
+		for (int i = 0; i < expenses.size(); i++) {
+			claim_text += "  - " + expenses.get(i).toString() + "\n";
+		}
+		return claim_text;
+	}
+    
+    
     
 }
 

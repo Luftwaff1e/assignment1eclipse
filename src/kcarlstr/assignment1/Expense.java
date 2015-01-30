@@ -83,4 +83,17 @@ public class Expense {
 	public void setIs_new(boolean is_new) {
 		this.is_new = is_new;
 	}
+
+	@Override
+	public String toString() {
+		String expense_text = "";
+		expense_text += String.valueOf(amount) + "\n";
+		expense_text += description + "\n";
+		expense_text += date.toLocaleString();
+		expense_text += "Category: " + category + "\n";
+		expense_text += "Currency: " + currency.getCurrencyCode() + "\n";
+		return expense_text;
+ 	}
+	
+	
 }

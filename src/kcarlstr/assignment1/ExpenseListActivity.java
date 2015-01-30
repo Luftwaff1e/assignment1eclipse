@@ -265,6 +265,11 @@ public class ExpenseListActivity extends ListActivity implements DatePickerFragm
         ClaimsData.get(getApplicationContext()).getClaims().remove(current_claim);
         finish();
     }
+    
+    public void emailClaim(MenuItem item) {
+    	Intent i = new Intent(getApplicationContext(), EmailActivity.class);
+    	startActivity(i);
+    }
 
     // Used to pass back data from the deletion confirmation dialog
     @Override

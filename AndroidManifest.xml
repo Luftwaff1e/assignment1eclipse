@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".ClaimsListActivity"
-            android:label="@string/app_name" >
+            android:label="Claims" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,13 +22,16 @@
             </intent-filter>
         </activity>
         <activity android:name=".ExpenseListActivity"
-            android:label="My app"/>
+            android:label="Claim"/>
 
         <activity android:name=".ExpenseEditActivity"
-            android:label="My app"/>
+            android:label="Expense"/>
 
         <activity android:name=".DatePickerActivity"
-            android:label="My app"/>
+            android:label="Pick Date"/>
+        
+        <activity android:name=".EmailActivity"
+            android:label="Email Claim"/>
     </application>
 
 </manifest>

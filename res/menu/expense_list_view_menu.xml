@@ -33,6 +33,12 @@
         android:title="Approve Claim"
         android:orderInCategory="102"
         android:onClick="approveClaim"/>
+    
+    <item 
+        android:id="@+id/email_claim_action_bar_button"
+        android:title="Email Claim"
+        android:orderInCategory="103"
+        android:onClick="emailClaim"/>
 
 
 </menu>
