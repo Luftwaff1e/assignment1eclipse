@@ -1,5 +1,6 @@
 package kcarlstr.assignment1;
 
+import android.R.integer;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,19 +21,25 @@ public class EmailActivity extends Activity {
 	private String recipient;
 	private String subject;
 	private String claimString;
+	private Claim currentClaim;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.email_view_layout);
 		
+		Bundle extras = getIntent().getExtras();
+        int position_clicked = extras.getInt(ClaimsListActivity.CLAIM_CLICKED_INTENT);
+        currentClaim = ClaimsData.get(getApplicationContext()).getClaims().get(position_clicked);
+        claimString = currentClaim.toString();
+		
 		recipientEditText = (EditText) findViewById(R.id.recipient_edit_text);
 		subjectEditText = (EditText) findViewById(R.id.subject_edit_text);
 		claimStringEditText = (EditText) findViewById(R.id.claims_string_edit_text);
 		sendEmailButton = (Button) findViewById(R.id.send_email_button);
+		claimStringEditText.setText(claimString);
 		
 		recipientEditText.addTextChangedListener(new TextWatcher() {
-			
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
 				recipient = s.toString();

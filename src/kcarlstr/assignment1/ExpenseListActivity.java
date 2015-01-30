@@ -268,6 +268,7 @@ public class ExpenseListActivity extends ListActivity implements DatePickerFragm
     
     public void emailClaim(MenuItem item) {
     	Intent i = new Intent(getApplicationContext(), EmailActivity.class);
+    	i.putExtra(ClaimsListActivity.CLAIM_CLICKED_INTENT, position_clicked);
     	startActivity(i);
     }
 
