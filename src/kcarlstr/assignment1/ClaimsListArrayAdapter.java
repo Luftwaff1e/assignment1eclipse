@@ -19,8 +19,11 @@ import java.util.Map;
 
 /**
  * Created by kylecarlstrom on 15-01-15.
+ * 
+ * Adapter for CLaimsListActivity
  */
 public class ClaimsListArrayAdapter extends ArrayAdapter<Claim> {
+	
     private final Context context;
     private List<Claim> claims;
     private Claim claim;
@@ -44,11 +47,12 @@ public class ClaimsListArrayAdapter extends ArrayAdapter<Claim> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // Get inflater object
+
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        // Inflate the xml file "claims_list_layout" which gives the view for the list items
+        // Inflate the xml file "claims_list_layout" which gives the view for the list of items
         View v = inflater.inflate(R.layout.claims_list_layout, parent, false);
 
+        // Get references to all of the widgets
         destinationTextView = (TextView) v.findViewById(R.id.destination);
         claimStatusTextView = (TextView) v.findViewById(R.id.claim_status_text_view);
         cadTextView = (TextView) v.findViewById(R.id.expense_amount_cad);
@@ -57,7 +61,7 @@ public class ClaimsListArrayAdapter extends ArrayAdapter<Claim> {
         gbpTextView = (TextView) v.findViewById(R.id.expense_amount_gbp);
         claimProgress = (ProgressBar) v.findViewById(R.id.claim_progress_bar_list);
 
-        // Set the text for the textview
+        // Set the text for the textviews
         claim = claims.get(position);
         destinationTextView.setText(claim.getClaimDescription());
         claimStatusTextView.setText(claim.getProgress());
@@ -73,6 +77,7 @@ public class ClaimsListArrayAdapter extends ArrayAdapter<Claim> {
         nf.setCurrency(Currency.getInstance("GBP"));
         gbpTextView.setText(nf.format(currencyAmounts.get("GBP")));
         
+        // Adjusts the progress bar
         String progress = claim.getProgress();
         if (progress.equals("Submitted")) {
             claimProgress.setProgress(50);

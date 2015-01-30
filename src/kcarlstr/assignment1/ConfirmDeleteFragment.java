@@ -11,6 +11,9 @@ import java.util.Date;
 
 /**
  * Created by kylecarlstrom on 15-01-24.
+ * 
+ * Fragment to host delete confirmation dialog, passes data back through interface onDialogPass
+ * The activity then implements this framework in order to recieve the data.
  */
 public class ConfirmDeleteFragment extends DialogFragment {
 
@@ -30,6 +33,9 @@ public class ConfirmDeleteFragment extends DialogFragment {
         dataPasser.onDialogPass(data);
     }
 
+    /*
+     * Creates a Dialog that asks the user to confirm that they wish to delete something
+     */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

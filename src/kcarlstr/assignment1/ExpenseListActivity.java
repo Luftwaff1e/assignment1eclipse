@@ -23,12 +23,14 @@ import java.util.Date;
 
 /**
  * Created by kylecarlstrom on 15-01-16.
+ * 
+ * Basically an overview of the claim, will list all of the different expenses and some info about them
  */
 public class ExpenseListActivity extends ListActivity implements DatePickerFragment.OnDataPass,
         ConfirmDeleteFragment.OnDataPass {
 
-    public static final String EXPENSE_CLICKED_INTENT = "expense_clicked_intent";
-    public static final String CLAIM_STATUS_INTENT = "claim_status_intent";
+    public static final String EXPENSE_CLICKED_INTENT = "com.kylecarlstrom.expense_clicked_intent";
+    public static final String CLAIM_STATUS_INTENT = "com.kylecarlstrom.claim_status_intent";
     private ArrayList<Expense> expenses;
     private int position_clicked;
     private int expense_clicked;
@@ -213,7 +215,7 @@ public class ExpenseListActivity extends ListActivity implements DatePickerFragm
     }
 
     
-    
+    // Used to save data to a file
     @Override
 	protected void onPause() {
 		super.onPause();
@@ -238,9 +240,17 @@ public class ExpenseListActivity extends ListActivity implements DatePickerFragm
         if (is_start_date) {
             current_claim.setStartDate(data);
             startDateButton.setText(sf.format(data));
+            if (current_claim.getStartDate().after(current_claim.getEndDate())) {
+            	current_claim.setEndDate(current_claim.getStartDate());
+            	endDateButton.setText(sf.format(data));
+            }
         } else {
             current_claim.setEndDate(data);
             endDateButton.setText(sf.format(data));
+            if (current_claim.getEndDate().before(current_claim.getStartDate())) {
+            	current_claim.setStartDate(current_claim.getEndDate());
+            	startDateButton.setText(sf.format(data));
+            }
         }
     }
 

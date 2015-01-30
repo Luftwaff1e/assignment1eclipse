@@ -12,11 +12,15 @@ import java.util.List;
 
 /**
  * Created by kylecarlstrom on 15-01-16.
+ * 
+ * Adapter for the ExpenseListActiviy class, fairly standard
  */
 public class ExpenseListAdapter extends ArrayAdapter<Expense> {
+	
     private final Context context;
     private List<Expense> expenses;
 
+    
     public ExpenseListAdapter(Context context, List<Expense> objects) {
         super(context, R.layout.expense_list_layout, objects);
         this.context = context;

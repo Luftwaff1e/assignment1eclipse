@@ -2,10 +2,11 @@ package kcarlstr.assignment1;
 
 import java.util.Currency;
 import java.util.Date;
-import java.util.Locale;
 
 /**
  * Created by kylecarlstrom on 15-01-15.
+ * 
+ * Stores an expense and all information that is encompassed within an expense
  */
 
 public class Expense {
@@ -16,8 +17,8 @@ public class Expense {
     private double amount;
     private Currency currency;
 
+    // Constructor has default values in case the user doesn't enter any, also prevents lots of crashes
     public Expense() {
-        // Testing values
         date = new Date();
         category = "Other";
         description = "";
@@ -27,6 +28,7 @@ public class Expense {
 
     }
 
+    // Copy constructor used to make an identical object that is not just a reference
     public Expense(Expense copy) {
         this.date = copy.getDate();
         this.category = new String(copy.getCategory());
@@ -84,6 +86,7 @@ public class Expense {
 		this.is_new = is_new;
 	}
 
+	// Gives a representation that makes sense, useful for emailing
 	@Override
 	public String toString() {
 		String expense_text = "";

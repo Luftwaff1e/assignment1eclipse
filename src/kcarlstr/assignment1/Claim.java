@@ -13,9 +13,14 @@ import android.R.integer;
 
 /**
  * Created by kylecarlstrom on 15-01-15.
+ * 
+ * This class holds the information about a claim and its related expenses
+ * Most of the member variables are initialized for a new claim so that the user
+ * could have defaults. I ran into a problem with setting a hint on claim description 
+ * if it was not null so that it why it is null
+ * 
  */
 public class Claim {
-    // For progress: 0 = in progress, 1 = submitted, 2 = returned, 3 = approved;
     private String progress;
     private Date startDate;
     private Date endDate;

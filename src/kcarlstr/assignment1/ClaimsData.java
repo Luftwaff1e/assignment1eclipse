@@ -17,20 +17,28 @@ import com.google.gson.reflect.TypeToken;
 
 /**
  * Created by kylecarlstrom on 15-01-16.
+ * 
+ * ClaimsData is a singleton so you access the constructor by calling get()
+ * If there was already an instance of the class it will return it, otherwise
+ * it will create a new ArrayList of claims and return that.
+ * 
+ * Also implemented the saving to file and loading from file here because this class
+ * acts as a bit of a controller and I thought this would be the best place to save/load.
  */
 public class ClaimsData {
-    // Singleton class, general outline of the code comes from "Android Programming: The Big Nerd Ranch Guide"
+
     private static ClaimsData sClaimsData;
     private Context appContext;
     private String FILENAME = "file.sav";
-
     private ArrayList<Claim> claims;
 
+    // Private constructor only gets called if there is no instance of ClaimsData
     private ClaimsData(Context appContext) {
         this.appContext = appContext;
         claims = new ArrayList<Claim>();
     }
 
+    // Returns the current instance of ClaimsData if it exists or it will call the constructor
     public static ClaimsData get(Context c) {
         if (sClaimsData == null) {
             sClaimsData = new ClaimsData(c.getApplicationContext());
@@ -42,6 +50,7 @@ public class ClaimsData {
         return claims;
     }
 
+    // Uses Gson to write the contents of all the claims and expenses to a file
     public void saveClaims() {
     	Gson gson = new Gson();
     	try {
@@ -59,6 +68,7 @@ public class ClaimsData {
     			
     }
     
+    // Uses Gson to load the contents of the claims from the file.
     public ArrayList<Claim> loadClaims() {
     	Gson gson = new Gson();
     	try {

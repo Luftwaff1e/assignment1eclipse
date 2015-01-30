@@ -2,6 +2,8 @@ package kcarlstr.assignment1;
 
 /**
  * Created by kylecarlstrom on 15-01-15.
+ * 
+ * List activity that shows all of the different claims
  */
 
 import android.app.ListActivity;
@@ -21,11 +23,13 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class ClaimsListActivity extends ListActivity implements ConfirmDeleteFragment.OnDataPass {
+	
     private ArrayList<Claim> claims;
-    public final static String CLAIM_CLICKED_INTENT = "claim_clicked_intent";
+    public final static String CLAIM_CLICKED_INTENT = "com.kylecarlstrom.claim_clicked_intent";
     private ClaimsListArrayAdapter adapter;
     private int position_clicked;
 
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +39,9 @@ public class ClaimsListActivity extends ListActivity implements ConfirmDeleteFra
         }
         adapter = new ClaimsListArrayAdapter(this, claims);
         ListView lv = getListView();
+        /*
+         * Delete Claim Dialog on Long Click --------------------------------------
+         */
         lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -47,6 +54,9 @@ public class ClaimsListActivity extends ListActivity implements ConfirmDeleteFra
         setListAdapter(adapter);
     }
 
+    /*
+     * Claim in list clicked, goes to claim view ----------------------------
+     */
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         Intent intent = new Intent(getBaseContext(), ExpenseListActivity.class);
@@ -67,12 +77,16 @@ public class ClaimsListActivity extends ListActivity implements ConfirmDeleteFra
         return true;
     }
     
+    // Saves the claim data to a file in on pause
     @Override
     public void onPause() {
     	super.onPause();
     	ClaimsData.get(this).saveClaims();
     }
 
+    /*
+     * Add claim button-------------------------------------------
+     */
     public void addClaim(MenuItem item) {
         Claim newClaim = new Claim();
         ArrayList<Claim> claimsList = ClaimsData.get(getApplicationContext()).getClaims();
@@ -82,6 +96,9 @@ public class ClaimsListActivity extends ListActivity implements ConfirmDeleteFra
         startActivity(intent);
     }
 
+    /*
+     * Receives data from the Delete Confirmation Dialog -----------------
+     */
     @Override
     public void onDialogPass(boolean data) {
         if (data) {
