@@ -101,9 +101,11 @@ public class Claim {
 	public String toString() {
 		String claim_text = "";
 		claim_text += claimDescription + "\n";
-		claim_text += "Date range: " + startDate.toLocaleString() + " - " + endDate.toLocaleString() + "\n";
+		claim_text += "Start date: " + startDate.toLocaleString() + "\n";
+		claim_text += "End date: " + endDate.toLocaleString() + "\n";
 		for (int i = 0; i < expenses.size(); i++) {
-			claim_text += "  - " + expenses.get(i).toString() + "\n";
+			claim_text += "Expense " + String.valueOf(i) + "\n";
+			claim_text += expenses.get(i).toString() + "\n";
 		}
 		return claim_text;
 	}
