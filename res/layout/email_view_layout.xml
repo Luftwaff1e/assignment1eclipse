@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
-        android:hint="recipientemail@email.com" >
+        android:hint="@string/email_hint" >
 
         <requestFocus />
     </EditText>
@@ -18,7 +18,7 @@
         android:id="@+id/subject_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Subject"/>
+        android:hint="@string/subject_hint"/>
 
     <EditText
         android:id="@+id/claims_string_edit_text"
@@ -29,6 +29,6 @@
         android:id="@+id/send_email_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Send Email" />
+        android:text="@string/send_email" />
 
 </LinearLayout>

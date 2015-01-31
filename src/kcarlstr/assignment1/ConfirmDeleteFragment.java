@@ -7,13 +7,12 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
-import java.util.Date;
 
 /**
  * Created by kylecarlstrom on 15-01-24.
  * 
  * Fragment to host delete confirmation dialog, passes data back through interface onDialogPass
- * The activity then implements this framework in order to recieve the data.
+ * The activity then implements this framework in order to receive the data.
  */
 public class ConfirmDeleteFragment extends DialogFragment {
 

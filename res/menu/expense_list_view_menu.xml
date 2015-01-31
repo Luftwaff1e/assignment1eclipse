@@ -6,37 +6,37 @@
 
     <item
         android:id="@+id/expense_add_action_bar_button"
-        android:title="Add expense"
+        android:title="@string/add_expense"
         android:orderInCategory="50"
         android:onClick="addExpense"/>
 
     <item
         android:id="@+id/claim_delete_action_bar_button"
-        android:title="Delete Claim"
+        android:title="@string/delete_claim"
         android:orderInCategory="75"
         android:onClick="deleteClaim"/>
 
     <item
         android:id="@+id/submit_claim_action_bar_button"
-        android:title="Submit Claim"
+        android:title="@string/submit_claim"
         android:orderInCategory="100"
         android:onClick="submitClaim"/>
 
     <item
         android:id="@+id/return_claim_action_bar_button"
-        android:title="Return claim"
+        android:title="@string/return_claim"
         android:orderInCategory="101"
         android:onClick="returnClaim"/>
 
     <item
         android:id="@+id/approve_claim_action_bar_button"
-        android:title="Approve Claim"
+        android:title="@string/approve_claim"
         android:orderInCategory="102"
         android:onClick="approveClaim"/>
     
     <item 
         android:id="@+id/email_claim_action_bar_button"
-        android:title="Email Claim"
+        android:title="@string/email_claim"
         android:orderInCategory="103"
         android:onClick="emailClaim"/>
 

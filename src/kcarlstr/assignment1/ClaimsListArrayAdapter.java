@@ -1,7 +1,6 @@
 package kcarlstr.assignment1;
 
 import android.content.Context;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,11 +8,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
 import java.util.Currency;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +29,8 @@ public class ClaimsListArrayAdapter extends ArrayAdapter<Claim> {
 
     private TextView destinationTextView;
     private TextView claimStatusTextView;
+    private TextView claimDateTextView;
+    
     private TextView cadTextView;
     private TextView usdTextView;
     private TextView eurTextView;
@@ -49,24 +48,35 @@ public class ClaimsListArrayAdapter extends ArrayAdapter<Claim> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        // Inflate the xml file "claims_list_layout" which gives the view for the list of items
         View v = inflater.inflate(R.layout.claims_list_layout, parent, false);
 
-        // Get references to all of the widgets
-        destinationTextView = (TextView) v.findViewById(R.id.destination);
+        getViews(v);
+        
+        setFields(position);
+
+        // Return the view that was generated
+        return v;
+    }
+    
+    private void getViews(View v) {
+    	destinationTextView = (TextView) v.findViewById(R.id.destination);
         claimStatusTextView = (TextView) v.findViewById(R.id.claim_status_text_view);
+        claimDateTextView = (TextView) v.findViewById(R.id.claim_date_list);
+        
         cadTextView = (TextView) v.findViewById(R.id.expense_amount_cad);
         usdTextView = (TextView) v.findViewById(R.id.expense_amount_usd);
         eurTextView = (TextView) v.findViewById(R.id.expense_amount_eur);
         gbpTextView = (TextView) v.findViewById(R.id.expense_amount_gbp);
         claimProgress = (ProgressBar) v.findViewById(R.id.claim_progress_bar_list);
-
-        // Set the text for the textviews
-        claim = claims.get(position);
+    }
+    
+    private void setFields(int position) {
+    	claim = claims.get(position);
         destinationTextView.setText(claim.getClaimDescription());
         claimStatusTextView.setText(claim.getProgress());
-
-        // Set the different currency amounts
+        final SimpleDateFormat sf = new SimpleDateFormat("MMMM dd, yyyy");
+        claimDateTextView.setText(sf.format(claim.getStartDate()));
+        
         currencyAmounts = claim.getCurrencyAmounts();
         nf.setCurrency(Currency.getInstance("CAD"));
         cadTextView.setText(nf.format(currencyAmounts.get("CAD")));
@@ -88,8 +98,5 @@ public class ClaimsListArrayAdapter extends ArrayAdapter<Claim> {
         } else {
         	claimProgress.setProgress(0);
         }
-
-        // Return the view that was generated
-        return v;
     }
 }

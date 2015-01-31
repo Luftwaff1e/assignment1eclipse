@@ -6,13 +6,13 @@
 
     <item
         android:id="@+id/add_claim_action_bar_button"
-        android:title="Save Expense"
+        android:title="@string/save_expense"
         android:orderInCategory="50"
         android:onClick="saveExpense"/>
 
     <item
         android:id="@+id/expense_cancel_action_bar_button"
-        android:title="Cancel"
+        android:title="@string/cancel"
         android:orderInCategory="75"
         android:onClick="cancelExpense"/>
 

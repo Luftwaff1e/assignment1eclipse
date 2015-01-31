@@ -6,7 +6,7 @@
 
     <item
         android:id="@+id/add_claim_action_bar_button"
-        android:title="Add claim"
+        android:title="@string/add_claim"
         android:orderInCategory="50"
         android:onClick="addClaim"/>
 

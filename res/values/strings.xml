@@ -9,5 +9,22 @@
     <string name="date">Date</string>
     <string name="currency">Currency</string>
     <string name="category">Category</string>
+    <string name="email_hint">recipientemail@email.com</string>
+    <string name="subject_hint">Subject</string>
+    <string name="send_email">Send Email</string>
+    <string name="start_date_text">Start Date</string>
+    <string name="start_date">Start Date</string>
+    <string name="end_date">End Date</string>
+    <string name="status_is">"Status: "</string>
+    <string name="add_claim">Add claim</string>
+    <string name="add_expense">Add expense</string>
+    <string name="delete_claim">Delete Claim</string>
+    <string name="submit_claim">Submit Claim</string>
+    <string name="return_claim">Return claim</string>
+    <string name="approve_claim">Approve Claim</string>
+    <string name="email_claim">Email Claim</string>
+    <string name="save_expense">Save Expense</string>
+    <string name="cancel">Cancel</string>
+    <string name="in_progress">In Progress</string>
 
 </resources>
