@@ -1,15 +1,10 @@
 package kcarlstr.assignment1;
 
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Currency;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import android.R.integer;
 
 /**
  * Created by kylecarlstrom on 15-01-15.
@@ -21,6 +16,7 @@ import android.R.integer;
  * 
  */
 public class Claim {
+	
     private String progress;
     private Date startDate;
     private Date endDate;
@@ -119,6 +115,8 @@ public class Claim {
     
 }
 
+
+// http://stackoverflow.com/questions/2784514/sort-arraylist-of-custom-objects-by-property 2015-01-30
 class ClaimComparator implements Comparator<Claim> {
     public int compare(Claim claim1, Claim claim2) {
         return claim1.getStartDate().compareTo(claim2.getStartDate());

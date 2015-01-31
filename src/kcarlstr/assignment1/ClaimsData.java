@@ -51,6 +51,7 @@ public class ClaimsData {
     }
 
     // Uses Gson to write the contents of all the claims and expenses to a file
+    // Heavily influenced by lonelytwitter lab
     public void saveClaims() {
     	Gson gson = new Gson();
     	try {
