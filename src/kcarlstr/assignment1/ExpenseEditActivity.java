@@ -25,16 +25,16 @@ import java.util.Date;
  */
 public class ExpenseEditActivity extends Activity implements DatePickerFragment.OnDataPass {
 
-    private int expense_clicked;
-    private int claim_clicked;
-    private Claim claim;
+    private int expenseClicked;
+    private int claimClicked;
 
     private double amountInDollars;
-    private String claim_progress;
+    private String claimProgress;
     private SimpleDateFormat sf = new SimpleDateFormat("MMMM dd, yyyy");
     private DecimalFormat df = new DecimalFormat("#0.00");
     private Expense expense;
     private Expense previous_expense;
+    private Claim claim;
 
 
     private EditText amountSpentEditText;
@@ -42,38 +42,40 @@ public class ExpenseEditActivity extends Activity implements DatePickerFragment.
     private Spinner currencySpinner;
     private EditText descriptionEditText;
     private Spinner categoriesSpinner;
+    
+    ArrayAdapter<CharSequence> currencyAdapter;
+    ArrayAdapter<CharSequence> categoriesAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.expense_edit_layout);
 
-        // Get references to the widgets
+        getViews();
+
+        getClaimAndExpense();
+        
+        inflateActionBar();
+        
+        setEditable();
+        
+        setFieldValues();
+        
+        setListeners();
+
+    }
+    
+    private void getViews() {
+    	// Get references to the widgets
         amountSpentEditText = (EditText) findViewById(R.id.amount_spent_edit_text);
         dateButtonExpense = (Button) findViewById(R.id.date_button_expense);
         currencySpinner = (Spinner) findViewById(R.id.currency_spinner);
         descriptionEditText = (EditText) findViewById(R.id.description_edit_text_expense);
         categoriesSpinner = (Spinner) findViewById(R.id.category_spinner);
-
-        // Get the expense from the bundle
-        Bundle extras = getIntent().getExtras();
-        expense_clicked = extras.getInt(ExpenseListActivity.EXPENSE_CLICKED_INTENT);
-        claim_clicked = extras.getInt(ClaimsListActivity.CLAIM_CLICKED_INTENT);
-        claim_progress = extras.getString(ExpenseListActivity.CLAIM_STATUS_INTENT);
-        
-        // Inflates the "cancel/done" action bar
-        inflateActionBar();
-
-        // Get the current expense
-        claim = ClaimsData.get(getApplicationContext()).getClaims().get(claim_clicked);
-        expense = claim.getExpenses().get(expense_clicked);
-        // Invoke the copy constructor to make a clone of the original expense
-        // This is done in case the user hits cancel so the changes can be reverted
-        previous_expense = new Expense(expense);
-
-
-        // Sets the expense to be editable or not based on the claims status
-        if (claim_progress.equals("Submitted") || claim_progress.equals("Approved")) {
+    }
+    
+    private void setEditable() {
+    	if (claimProgress.equals("Submitted") || claimProgress.equals("Approved")) {
             getActionBar().hide();
             amountSpentEditText.setFocusable(false);
             dateButtonExpense.setEnabled(false);
@@ -81,28 +83,44 @@ public class ExpenseEditActivity extends Activity implements DatePickerFragment.
             descriptionEditText.setFocusable(false);
             categoriesSpinner.setEnabled(false);
         }
+    }
+    
+    private void getClaimAndExpense() {
+    	// Get the expense from the bundle
+        Bundle extras = getIntent().getExtras();
+        expenseClicked = extras.getInt(ExpenseListActivity.EXPENSE_CLICKED_INTENT);
+        claimClicked = extras.getInt(ClaimsListActivity.CLAIM_CLICKED_INTENT);
+        claimProgress = extras.getString(ExpenseListActivity.CLAIM_STATUS_INTENT);
 
-        // Set default value of fields
-        amountInDollars = expense.getAmount();
+        claim = ClaimsData.get(getApplicationContext()).getClaims().get(claimClicked);
+        expense = claim.getExpenses().get(expenseClicked);
+        
+        // Invoke the copy constructor to make a clone of the original expense
+        // This is done in case the user hits cancel so the changes can be reverted
+        previous_expense = new Expense(expense);
+    }
+    
+    private void setFieldValues() {
+    	amountInDollars = expense.getAmount();
         amountSpentEditText.setHint(df.format(amountInDollars));
         dateButtonExpense.setText(sf.format(expense.getDate()));
         descriptionEditText.setText(expense.getDescription());
 
-        // Set the adapter for the currency and categories spinners
-        ArrayAdapter<CharSequence> currencyAdapter = ArrayAdapter.createFromResource(this,
+        currencyAdapter = ArrayAdapter.createFromResource(this,
                 R.array.currency_string,
                 android.R.layout.simple_spinner_dropdown_item);
         currencySpinner.setAdapter(currencyAdapter);
         currencySpinner.setSelection(currencyAdapter.getPosition(expense.getCurrency().toString()));
 
-        ArrayAdapter<CharSequence> categoriesAdapter = ArrayAdapter.createFromResource(this,
+        categoriesAdapter = ArrayAdapter.createFromResource(this,
                 R.array.categories_string,
                 android.R.layout.simple_spinner_dropdown_item);
         categoriesSpinner.setAdapter(categoriesAdapter);
         categoriesSpinner.setSelection(categoriesAdapter.getPosition(expense.getCategory()));
-
-        
-        currencySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+    }
+    
+    private void setListeners() {
+    	currencySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 expense.setCurrency(Currency.getInstance(parent.getItemAtPosition(position).toString()));
@@ -152,10 +170,10 @@ public class ExpenseEditActivity extends Activity implements DatePickerFragment.
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String amountSpentString = amountSpentEditText.getText().toString();
-                if (amountSpentString.length() == 0) {
-                    amountInDollars = 0.0;
-                } else {
-                    amountInDollars = Double.parseDouble(amountSpentString);
+                try {
+                	amountInDollars = Double.parseDouble(amountSpentString);
+                } catch (NumberFormatException nfe) {
+                	amountInDollars = 0.0;
                 }
                 expense.setAmount(amountInDollars);
             }
@@ -177,8 +195,9 @@ public class ExpenseEditActivity extends Activity implements DatePickerFragment.
                 dateFragment.show(getFragmentManager(), "datePicker");
             }
         });
-
     }
+    
+    
     
     // Method to receive the date from the date picker dialog
     @Override
@@ -190,7 +209,7 @@ public class ExpenseEditActivity extends Activity implements DatePickerFragment.
     // If the expense is new and back is pressed then it doesn't save it
     @Override
     public void onBackPressed() {
-        if (expense.getDescription().equals("") || expense.getAmount() == 0) {
+        if (expense.getDescription().equals("")) {
         	claim.getExpenses().remove(expense);
         }
         super.onBackPressed();
@@ -233,9 +252,9 @@ public class ExpenseEditActivity extends Activity implements DatePickerFragment.
             new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (expense.getDescription().equals("") || expense.getAmount() == 0) {
+                    if (expense.getDescription().equals("")) {
                         Toast.makeText(getApplicationContext(),
-                                "Please enter a description and amount",
+                                "Please enter a description",
                                 Toast.LENGTH_SHORT).show();
                     } else {
                     	expense.setIs_new(false);
@@ -256,6 +275,7 @@ public class ExpenseEditActivity extends Activity implements DatePickerFragment.
                     finish();
                 }
             });
+    
     // Show the custom action bar view and hide the normal Home icon and title.
     final ActionBar actionBar = getActionBar();
     actionBar.setDisplayOptions(

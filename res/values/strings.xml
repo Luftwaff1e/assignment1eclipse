@@ -3,5 +3,11 @@
 
     <string name="app_name">kcarlstr-notes</string>
     <string name="action_settings">Settings</string>
+    <string name="description">Description</string>
+    <string name="expense_description">Description</string>
+    <string name="expense_description_hint">Enter a description of the expense</string>
+    <string name="date">Date</string>
+    <string name="currency">Currency</string>
+    <string name="category">Category</string>
 
 </resources>
