@@ -8,15 +8,23 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/description_expense"
-        android:textSize="20sp"
-        android:layout_alignParentLeft="true"/>
-    
+        android:id="@+id/date_text_expense"
+        android:textSize="20sp"/>
+
     <TextView
+        android:id="@+id/amount_spent_expense"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/amount_spent_expense"
-        android:textSize="20sp"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignLeft="@+id/date_text_expense"
+        android:layout_below="@+id/date_text_expense"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/description_expense"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/amount_spent_expense"
+        android:textSize="20sp" />
 
 </RelativeLayout>

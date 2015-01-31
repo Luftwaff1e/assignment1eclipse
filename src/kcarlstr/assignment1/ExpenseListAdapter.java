@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -36,11 +37,14 @@ public class ExpenseListAdapter extends ArrayAdapter<Expense> {
         // Get reference to the textviews found in the layout
         TextView descriptionTextView = (TextView) v.findViewById(R.id.description_expense);
         TextView amountSpentTextView = (TextView) v.findViewById(R.id.amount_spent_expense);
+        TextView dateTextView = (TextView) v.findViewById(R.id.date_text_expense);
 
         
         NumberFormat nf = NumberFormat.getCurrencyInstance();
         nf.setCurrency(expenses.get(position).getCurrency());
         amountSpentTextView.setText(nf.format(expenses.get(position).getAmount()));
+        final SimpleDateFormat sf = new SimpleDateFormat("MMMM dd, yyyy");
+        dateTextView.setText(sf.format(expenses.get(position).getDate()));
 
 
         // Set the text for the textview

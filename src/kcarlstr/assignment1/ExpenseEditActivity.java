@@ -30,8 +30,8 @@ public class ExpenseEditActivity extends Activity implements DatePickerFragment.
 
     private double amountInDollars;
     private String claimProgress;
-    private SimpleDateFormat sf = new SimpleDateFormat("MMMM dd, yyyy");
     private DecimalFormat df = new DecimalFormat("#0.00");
+    private SimpleDateFormat sf = new SimpleDateFormat("MMMM dd, yyyy");
     private Expense expense;
     private Expense previous_expense;
     private Claim claim;
