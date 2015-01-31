@@ -25,12 +25,10 @@ public class ClaimsListArrayAdapter extends ArrayAdapter<Claim> {
     private List<Claim> claims;
     private Claim claim;
     private Map<String, Double> currencyAmounts;
-    NumberFormat nf = NumberFormat.getCurrencyInstance();
 
     private TextView destinationTextView;
     private TextView claimStatusTextView;
     private TextView claimDateTextView;
-    
     private TextView cadTextView;
     private TextView usdTextView;
     private TextView eurTextView;
@@ -77,6 +75,8 @@ public class ClaimsListArrayAdapter extends ArrayAdapter<Claim> {
         final SimpleDateFormat sf = new SimpleDateFormat("MMMM dd, yyyy");
         claimDateTextView.setText(sf.format(claim.getStartDate()));
         
+        
+        NumberFormat nf = NumberFormat.getCurrencyInstance();
         currencyAmounts = claim.getCurrencyAmounts();
         nf.setCurrency(Currency.getInstance("CAD"));
         cadTextView.setText(nf.format(currencyAmounts.get("CAD")));

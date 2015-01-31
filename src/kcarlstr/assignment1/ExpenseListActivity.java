@@ -32,10 +32,10 @@ public class ExpenseListActivity extends ListActivity implements DatePickerFragm
     public static final String EXPENSE_CLICKED_INTENT = "com.kylecarlstrom.expense_clicked_intent";
     public static final String CLAIM_STATUS_INTENT = "com.kylecarlstrom.claim_status_intent";
     private ArrayList<Expense> expenses;
-    private int position_clicked;
-    private int expense_clicked;
-    private boolean is_start_date = false;
-    private SimpleDateFormat sf = new SimpleDateFormat("MMMM dd, yyyy");
+    private int positionClicked;
+    private int expenseClicked;
+    private boolean isStartDate = false;
+    private final SimpleDateFormat sf = new SimpleDateFormat("MMMM dd, yyyy");
 
     private ExpenseListAdapter adapter;
     private TextView titleTextView;
@@ -49,21 +49,38 @@ public class ExpenseListActivity extends ListActivity implements DatePickerFragm
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.expense_list_view_layout);
+
+        getClaimAndExpenses();
         
-        // Get references to the widgets
+        getViews();
+        
+        setDefaultView();
+        
+        setListeners();
+        
+        adapter = new ExpenseListAdapter(this, expenses);
+        setListAdapter(adapter);
+    }
+    
+    private void getViews() {
+    	// Get references to the widgets
         titleTextView = (EditText) findViewById(R.id.claim_title);
         claimStatusTextView = (TextView) findViewById(R.id.claim_status);
         startDateButton = (Button) findViewById(R.id.start_date_button);
         endDateButton = (Button) findViewById(R.id.end_date_button);
         claimProgress = (ProgressBar) findViewById(R.id.claim_progress_bar);
-
-        // Get the position that was clicked from the extras on the intent
+    }
+    
+    private void getClaimAndExpenses() {
+    	// Get the position that was clicked from the extras on the intent
         Bundle extras = getIntent().getExtras();
-        position_clicked = extras.getInt(ClaimsListActivity.CLAIM_CLICKED_INTENT);
-        current_claim = ClaimsData.get(getApplicationContext()).getClaims().get(position_clicked);
+        positionClicked = extras.getInt(ClaimsListActivity.CLAIM_CLICKED_INTENT);
+        current_claim = ClaimsData.get(getApplicationContext()).getClaims().get(positionClicked);
         expenses = current_claim.getExpenses();
-
-        // Set the default claim info
+    }
+    
+    private void setDefaultView() {
+    	// Set the default claim info
         if (current_claim.getClaimDescription() == null) {
             titleTextView.setHint("Claim description");
         } else {
@@ -73,13 +90,14 @@ public class ExpenseListActivity extends ListActivity implements DatePickerFragm
         startDateButton.setText(sf.format(current_claim.getStartDate()));
         endDateButton.setText(sf.format(current_claim.getEndDate()));
         claimProgress.setProgress(0);
-
-
-        // Set up the listeners
+    }
+    
+    private void setListeners() {
+    	// Set up the listeners
         titleTextView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+            	// Intentionally blank
             }
 
             @Override
@@ -89,14 +107,14 @@ public class ExpenseListActivity extends ListActivity implements DatePickerFragm
 
             @Override
             public void afterTextChanged(Editable s) {
-
+            	// Intentionally blank
             }
         });
         
         startDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                is_start_date = true;
+                isStartDate = true;
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(DatePickerFragment.DATE_FRAGMENT_INTENT, current_claim.getStartDate());
                 DialogFragment dateFragment = new DatePickerFragment();
@@ -108,7 +126,7 @@ public class ExpenseListActivity extends ListActivity implements DatePickerFragm
         endDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                is_start_date = false;
+                isStartDate = false;
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(DatePickerFragment.DATE_FRAGMENT_INTENT, current_claim.getEndDate());
                 DialogFragment dateFragment = new DatePickerFragment();
@@ -124,7 +142,7 @@ public class ExpenseListActivity extends ListActivity implements DatePickerFragm
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             	// On item click start a new activity that shows the corresponding expense
                 Intent intent = new Intent(getBaseContext(), ExpenseEditActivity.class);
-                intent.putExtra(ClaimsListActivity.CLAIM_CLICKED_INTENT, position_clicked);
+                intent.putExtra(ClaimsListActivity.CLAIM_CLICKED_INTENT, positionClicked);
                 intent.putExtra(EXPENSE_CLICKED_INTENT, position);
                 intent.putExtra(CLAIM_STATUS_INTENT, current_claim.getProgress());
                 startActivity(intent);
@@ -140,21 +158,14 @@ public class ExpenseListActivity extends ListActivity implements DatePickerFragm
             	}
                 ConfirmDeleteFragment dialog = new ConfirmDeleteFragment();
                 dialog.show(getFragmentManager(), "confirmDialog");
-                expense_clicked = position;
+                expenseClicked = position;
                 return true;
             }
         });
-
-        adapter = new ExpenseListAdapter(this, expenses);
-        setListAdapter(adapter);
     }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        adapter.notifyDataSetChanged();
-        
-        // Change what is editable based on the claims progress
+    
+    private void setEnabledOrNot() {
+    	// Change what is editable based on the claims progress
         String progress = current_claim.getProgress();
             if (progress.equals("Submitted")) {
             	titleTextView.setFocusable(false);
@@ -172,6 +183,14 @@ public class ExpenseListActivity extends ListActivity implements DatePickerFragm
                 endDateButton.setEnabled(false);
                 claimProgress.setProgress(100);
             }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
+        
+        setEnabledOrNot();
 
     }
 
@@ -213,7 +232,6 @@ public class ExpenseListActivity extends ListActivity implements DatePickerFragm
 
         return true;
     }
-
     
     // Used to save data to a file
     @Override
@@ -228,31 +246,12 @@ public class ExpenseListActivity extends ListActivity implements DatePickerFragm
         Expense newExpense = new Expense();
         current_claim.getExpenses().add(newExpense);
         Intent intent = new Intent(getBaseContext(), ExpenseEditActivity.class);
-        intent.putExtra(ClaimsListActivity.CLAIM_CLICKED_INTENT, position_clicked);
+        intent.putExtra(ClaimsListActivity.CLAIM_CLICKED_INTENT, positionClicked);
         intent.putExtra(EXPENSE_CLICKED_INTENT, current_claim.getExpenses().size()-1);
         intent.putExtra(CLAIM_STATUS_INTENT, current_claim.getProgress());
         startActivity(intent);
     }
 
-    // Interface to pass back the data from the DatePickerDialog
-    @Override
-    public void onDataPass(Date data) {
-        if (is_start_date) {
-            current_claim.setStartDate(data);
-            startDateButton.setText(sf.format(data));
-            if (current_claim.getStartDate().after(current_claim.getEndDate())) {
-            	current_claim.setEndDate(current_claim.getStartDate());
-            	endDateButton.setText(sf.format(data));
-            }
-        } else {
-            current_claim.setEndDate(data);
-            endDateButton.setText(sf.format(data));
-            if (current_claim.getEndDate().before(current_claim.getStartDate())) {
-            	current_claim.setStartDate(current_claim.getEndDate());
-            	startDateButton.setText(sf.format(data));
-            }
-        }
-    }
 
     // Menu button used to submit the claim, once submitted no further edits are allowed
     public void submitClaim(MenuItem item) {
@@ -295,15 +294,35 @@ public class ExpenseListActivity extends ListActivity implements DatePickerFragm
     
     public void emailClaim(MenuItem item) {
     	Intent i = new Intent(getApplicationContext(), EmailActivity.class);
-    	i.putExtra(ClaimsListActivity.CLAIM_CLICKED_INTENT, position_clicked);
+    	i.putExtra(ClaimsListActivity.CLAIM_CLICKED_INTENT, positionClicked);
     	startActivity(i);
+    }
+    
+    // Interface to pass back the data from the DatePickerDialog
+    @Override
+    public void onDataPass(Date data) {
+        if (isStartDate) {
+            current_claim.setStartDate(data);
+            startDateButton.setText(sf.format(data));
+            if (current_claim.getStartDate().after(current_claim.getEndDate())) {
+            	current_claim.setEndDate(current_claim.getStartDate());
+            	endDateButton.setText(sf.format(data));
+            }
+        } else {
+            current_claim.setEndDate(data);
+            endDateButton.setText(sf.format(data));
+            if (current_claim.getEndDate().before(current_claim.getStartDate())) {
+            	current_claim.setStartDate(current_claim.getEndDate());
+            	startDateButton.setText(sf.format(data));
+            }
+        }
     }
 
     // Used to pass back data from the deletion confirmation dialog
     @Override
     public void onDialogPass(boolean data) {
         if (data) {
-            expenses.remove(expense_clicked);
+            expenses.remove(expenseClicked);
         }
         adapter.notifyDataSetChanged();
     }
