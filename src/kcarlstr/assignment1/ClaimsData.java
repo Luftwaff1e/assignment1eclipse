@@ -1,7 +1,6 @@
 package kcarlstr.assignment1;
 
 import android.content.Context;
-import android.renderscript.Element.DataType;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
