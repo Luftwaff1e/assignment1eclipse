@@ -3,7 +3,7 @@ package kcarlstr.assignment1;
 import java.util.Currency;
 import java.util.Date;
 
-/*
+/**
  * Created by kylecarlstrom on 15-01-15.
  * 
  * Stores an expense and all information that is encompassed within an expense

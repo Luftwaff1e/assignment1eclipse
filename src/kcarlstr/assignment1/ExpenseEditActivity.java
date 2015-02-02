@@ -111,6 +111,7 @@ public class ExpenseEditActivity extends Activity implements DatePickerFragment.
         previous_expense = new Expense(expense);
     }
     
+    // Set default values for the different fields
     private void setFieldValues() {
     	amountInDollars = expense.getAmount();
         amountSpentEditText.setHint(df.format(amountInDollars));
@@ -130,6 +131,7 @@ public class ExpenseEditActivity extends Activity implements DatePickerFragment.
         categoriesSpinner.setSelection(categoriesAdapter.getPosition(expense.getCategory()));
     }
     
+    // Set up the various listeners that take data and add it to the expense
     private void setListeners() {
     	currencySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

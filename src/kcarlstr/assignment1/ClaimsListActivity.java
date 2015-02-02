@@ -72,6 +72,7 @@ public class ClaimsListActivity extends ListActivity implements ConfirmDeleteFra
     private void setUpListeners() {
     	ListView lv = getListView();
     	
+    	// Open claim overview on list click
     	lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
@@ -104,6 +105,7 @@ public class ClaimsListActivity extends ListActivity implements ConfirmDeleteFra
     	Collections.sort(claims, new ClaimComparator());
     }
 
+    // Creates a new claim and goes to the claim overview screen
     public void addClaim(MenuItem item) {
         Claim newClaim = new Claim();
         ArrayList<Claim> claimsList = ClaimsData.get(getApplicationContext()).getClaims();

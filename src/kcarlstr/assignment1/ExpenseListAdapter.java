@@ -42,7 +42,7 @@ public class ExpenseListAdapter extends ArrayAdapter<Expense> {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.expense_list_layout, parent, false);
 
-        // Get reference to the textviews found in the layout
+        // Get reference to the text views found in the layout
         TextView descriptionTextView = (TextView) v.findViewById(R.id.description_expense);
         TextView amountSpentTextView = (TextView) v.findViewById(R.id.amount_spent_expense);
         TextView dateTextView = (TextView) v.findViewById(R.id.date_text_expense);

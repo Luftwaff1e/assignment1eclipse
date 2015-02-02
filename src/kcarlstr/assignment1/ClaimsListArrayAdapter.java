@@ -1,6 +1,7 @@
 package kcarlstr.assignment1;
 
 import android.content.Context;
+import android.media.audiofx.BassBoost.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,7 +53,7 @@ public class ClaimsListArrayAdapter extends ArrayAdapter<Claim> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
+    	// Inflate item in list view
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.claims_list_layout, parent, false);
         getViews(v);      
@@ -62,6 +63,7 @@ public class ClaimsListArrayAdapter extends ArrayAdapter<Claim> {
         return v;
     }
     
+    // Getting all the different views
     private void getViews(View v) {
     	destinationTextView = (TextView) v.findViewById(R.id.destination);
         claimStatusTextView = (TextView) v.findViewById(R.id.claim_status_text_view);
@@ -74,6 +76,7 @@ public class ClaimsListArrayAdapter extends ArrayAdapter<Claim> {
         claimProgress = (ProgressBar) v.findViewById(R.id.claim_progress_bar_list);
     }
     
+    // Setting the default fields
     private void setFields(int position) {
     	claim = claims.get(position);
         destinationTextView.setText(claim.getClaimDescription());

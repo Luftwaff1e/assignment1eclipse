@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-/*
+/**
  * Simple activity that allows a user to enter in a recipient and a subject
  * and send a claim
  * 
@@ -129,7 +129,7 @@ public class EmailActivity extends Activity {
 		});
 		
 		/*
-		 * Send email button that will open up a
+		 * Send email button that will open up an activity to sen edmail
 		 */
 		sendEmailButton.setOnClickListener(new View.OnClickListener() {
 			
@@ -141,6 +141,7 @@ public class EmailActivity extends Activity {
 				i.putExtra(Intent.EXTRA_EMAIL, recipient);
 				i.putExtra(Intent.EXTRA_SUBJECT, subject);
 				i.putExtra(Intent.EXTRA_TEXT, claimString);
+				// Try to open up an email client
 				try {
 					startActivity(Intent.createChooser(i, "Send claim"));
 				} catch (android.content.ActivityNotFoundException e) {

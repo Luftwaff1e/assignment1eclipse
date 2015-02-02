@@ -119,6 +119,7 @@ public class ExpenseListActivity extends ListActivity implements DatePickerFragm
             }
         });
         
+        // Start a date picker dialog on-click
         startDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,7 +131,8 @@ public class ExpenseListActivity extends ListActivity implements DatePickerFragm
                 dateFragment.show(getFragmentManager(), "datePicker");
             }
         });
-
+        
+        // Start a date picker dialog on-click
         endDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
