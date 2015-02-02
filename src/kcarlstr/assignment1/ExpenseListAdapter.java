@@ -15,6 +15,14 @@ import java.util.List;
  * Created by kylecarlstrom on 15-01-16.
  * 
  * Adapter for the ExpenseListActiviy class, fairly standard
+ * 
+ * Copyright 2015 Kyle Carlstrom kcarlstr@ualberta.ca Licensed under the Apache License, Version 2.0 (the "License"); 
+ * you may not use this file except in compliance with the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, 
+ * software distributed under the License is distributed on an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+ * See the License for the specific language governing permissions and limitations under the License.
  */
 public class ExpenseListAdapter extends ArrayAdapter<Expense> {
 	
@@ -39,7 +47,7 @@ public class ExpenseListAdapter extends ArrayAdapter<Expense> {
         TextView amountSpentTextView = (TextView) v.findViewById(R.id.amount_spent_expense);
         TextView dateTextView = (TextView) v.findViewById(R.id.date_text_expense);
 
-        
+        // Display the amount in the proper format for that currency
         NumberFormat nf = NumberFormat.getCurrencyInstance();
         nf.setCurrency(expenses.get(position).getCurrency());
         amountSpentTextView.setText(nf.format(expenses.get(position).getAmount()));

@@ -11,8 +11,15 @@ import java.util.Map;
  * 
  * This class holds the information about a claim and its related expenses
  * Most of the member variables are initialized for a new claim so that the user
- * could have defaults. I ran into a problem with setting a hint on claim description 
- * if it was not null so that it why it is null
+ * could have defaults.
+ * 
+ * Copyright 2015 Kyle Carlstrom kcarlstr@ualberta.ca Licensed under the Apache License, Version 2.0 (the "License"); 
+ * you may not use this file except in compliance with the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, 
+ * software distributed under the License is distributed on an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+ * See the License for the specific language governing permissions and limitations under the License.
  * 
  */
 public class Claim {
@@ -73,6 +80,7 @@ public class Claim {
         this.progress = progress;
     }
 
+    // Updates the amounts of each currency to display in the claims list view
     private void updateCurrencyAmounts() {
         currencyAmounts.clear();
         currencyAmounts.put("CAD", 0.0);
