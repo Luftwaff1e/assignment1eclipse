@@ -26,8 +26,8 @@
         android:layout_height="wrap_content"
         android:text="@string/send_email" />
     
-    <EditText
-        android:id="@+id/claims_string_edit_text"
+    <EditText 
+        android:id="@+id/claims_string_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

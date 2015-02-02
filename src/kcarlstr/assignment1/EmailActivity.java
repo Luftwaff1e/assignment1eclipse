@@ -50,7 +50,7 @@ public class EmailActivity extends Activity {
         // Get references to the different widgets
 		recipientEditText = (EditText) findViewById(R.id.recipient_edit_text);
 		subjectEditText = (EditText) findViewById(R.id.subject_edit_text);
-		claimStringEditText = (EditText) findViewById(R.id.claims_string_edit_text);
+		claimStringEditText = (EditText) findViewById(R.id.claims_string_text);
 		sendEmailButton = (Button) findViewById(R.id.send_email_button);
 		claimStringEditText.setText(claimString);
 		
